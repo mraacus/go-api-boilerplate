@@ -10,6 +10,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 
 	"go-api-boilerplate/internal/database"
+	"go-api-boilerplate/internal/server/handlers"
 )
 
 type Server struct {
@@ -26,10 +27,13 @@ func NewServer() *http.Server {
 		db: database.New(),
 	}
 
+	h := handlers.Handler{
+		DB: NewServer.db}
+
 	// Declare Server config
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", NewServer.port),
-		Handler:      NewServer.RegisterRoutes(),
+		Handler:      NewServer.RegisterRoutes(h),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

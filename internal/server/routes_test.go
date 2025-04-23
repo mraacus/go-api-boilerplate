@@ -2,11 +2,14 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/labstack/echo/v4"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
+
+	"github.com/labstack/echo/v4"
+
+	"go-api-boilerplate/internal/server/handlers"
 )
 
 func TestHandler(t *testing.T) {
@@ -14,9 +17,12 @@ func TestHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	resp := httptest.NewRecorder()
 	c := e.NewContext(req, resp)
-	s := &Server{}
+
+	// Create an instance of the handler with a mock DB
+	h := &handlers.Handler{DB: nil}
+
 	// Assertions
-	if err := s.HelloWorldHandler(c); err != nil {
+	if err := h.GrootHandler(c); err != nil {
 		t.Errorf("handler() error = %v", err)
 		return
 	}
@@ -24,7 +30,7 @@ func TestHandler(t *testing.T) {
 		t.Errorf("handler() wrong status code = %v", resp.Code)
 		return
 	}
-	expected := map[string]string{"message": "Hello World"}
+	expected := map[string]string{"message": "I am groot"}
 	var actual map[string]string
 	// Decode the response body into the actual map
 	if err := json.NewDecoder(resp.Body).Decode(&actual); err != nil {

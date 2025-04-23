@@ -12,6 +12,7 @@ import (
 	"go-api-boilerplate/internal/server"
 )
 
+// gracefulShutdown handles graceful shutdown of the server when the user presses Ctrl+C via os signal context
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -40,6 +41,7 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 func main() {
 
 	server := server.NewServer()
+	log.Printf("Server up and running at port%v", server.Addr)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
