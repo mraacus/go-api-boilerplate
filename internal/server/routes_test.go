@@ -9,6 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	"go-api-boilerplate/internal/database/queries"
 	"go-api-boilerplate/internal/server/handlers"
 )
 
@@ -19,7 +20,8 @@ func TestHandler(t *testing.T) {
 	c := e.NewContext(req, resp)
 
 	// Create an instance of the handler with a mock DB
-	h := &handlers.Handler{DB: nil}
+	q := queries.New(nil)
+	h := &handlers.Handler{Q: *q}
 
 	// Assertions
 	if err := h.GrootHandler(c); err != nil {
