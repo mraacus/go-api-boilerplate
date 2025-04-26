@@ -6,12 +6,12 @@ cloud:
 servers: []
 sql:
   - engine: "postgresql"
-    queries: "query.sql"
-    schema: "schema.sql"
+    queries: "./query"
+    schema: "./schema.sql"
     gen:
       go:
         package: "queries"
-        out: "internal/queries"
+        out: "../queries"
         sql_package: "pgx/v5"
 # overrides:
 #     go: null

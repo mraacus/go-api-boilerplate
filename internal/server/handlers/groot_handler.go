@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"go-api-boilerplate/internal/queries"
+	"go-api-boilerplate/internal/database/queries"
 
 	"github.com/jackc/pgx/v5/pgtype"
 

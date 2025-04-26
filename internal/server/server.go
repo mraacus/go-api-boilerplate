@@ -12,8 +12,9 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/joho/godotenv/autoload"
 
-	"go-api-boilerplate/internal/queries"
+	"go-api-boilerplate/internal/database/queries"
 	"go-api-boilerplate/internal/server/handlers"
 )
 
@@ -29,7 +30,7 @@ var ctx = context.Background()
 var (
 	database = os.Getenv("DB_DATABASE")
 	password = os.Getenv("DB_PASSWORD")
-	username = os.Getenv("DB_USERNAME")
+	username = os.Getenv("DB_USER")
 	port     = os.Getenv("DB_PORT")
 	host     = os.Getenv("DB_HOST")
 	schema   = os.Getenv("DB_SCHEMA")
