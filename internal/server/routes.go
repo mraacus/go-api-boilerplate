@@ -24,7 +24,8 @@ func (s *Server) RegisterRoutes(handler handlers.Handler) http.Handler {
 	}))
 
 	e.GET("/", handler.GrootHandler)
-	e.GET("/health", handler.HealthHandler)
+	e.POST("/users", handler.CreateUser)
+	// e.GET("/health", handler.HealthHandler)
 
 	return e
 }

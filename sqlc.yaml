@@ -1,0 +1,20 @@
+version: "2"
+cloud:
+    organization: ""
+    project: ""
+    hostname: ""
+servers: []
+sql:
+  - engine: "postgresql"
+    queries: "query.sql"
+    schema: "schema.sql"
+    gen:
+      go:
+        package: "queries"
+        out: "internal/queries"
+        sql_package: "pgx/v5"
+# overrides:
+#     go: null
+plugins: []
+rules: []
+options: {}
