@@ -1,10 +1,11 @@
 services:
-  psql_bp:
+  postgres-db:
     image: postgres:latest
-    restart: unless-stopped
+    container_name: go-api-postgres-db
+    restart: always
     environment:
       POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT}:5432"
