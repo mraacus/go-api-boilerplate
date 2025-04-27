@@ -4,23 +4,25 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"net/http"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	"go-api-boilerplate/internal/database/queries"
 	"go-api-boilerplate/internal/server/handler"
+	"go-api-boilerplate/internal/server/middlewares"
 )
 
 type Server struct {
-	DB         *pgxpool.Pool
-	Queries    *queries.Queries
-	Logger     *slog.Logger
-	HttpServer *http.Server
+	DB      *pgxpool.Pool
+	Queries *queries.Queries
+	Logger  *slog.Logger
+	Echo    *echo.Echo
 }
 
 var ctx = context.Background()
@@ -58,34 +60,38 @@ func NewServer() *Server {
 	}
 	logger.Info("Successfully initialized handlers")
 
-	port, err := strconv.Atoi(os.Getenv("PORT"))
-	if err != nil {
-		port = 8080 // Default port
-	}
-
 	// Create the server instance
 	s := &Server{
 		DB:      pool,
 		Queries: q,
 		Logger:  logger,
 	}
-	httpServer := &http.Server{
-		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      s.RegisterRoutes(h),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
-	}
-	s.HttpServer = httpServer
+
+	// Set up Echo with middleware and routes
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middlewares.CustomMiddleware)
+
+	s.RegisterRoutes(e, h)
+
+	s.Echo = e
 
 	return s
 }
 
 func (s *Server) Start() error {
-	s.Logger.Info("Server starting up and listening on port:", "port", s.HttpServer.Addr)
-	err := s.HttpServer.ListenAndServe()
-	if err != nil && err != http.ErrServerClosed {
-		s.Logger.Error("Error starting server:", "error", err)
+	port, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		port = 8080 // Default port
 	}
-	return err
+	s.Logger.Info("Server starting up and listening on port:", "port", port)
+
+	// Configure server timeouts
+	s.Echo.Server.ReadTimeout = 10 * time.Second
+	s.Echo.Server.WriteTimeout = 30 * time.Second
+	s.Echo.Server.IdleTimeout = time.Minute
+
+	// Start the Echo server
+	return s.Echo.Start(fmt.Sprintf(":%d", port))
 }

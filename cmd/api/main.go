@@ -29,7 +29,7 @@ func gracefulShutdown(s *server.Server, done chan bool) {
 	defer cancel()
 
 	// Shutdown the server
-	if err := s.HttpServer.Shutdown(ctx); err != nil {
+	if err := s.Echo.Shutdown(ctx); err != nil {
 		s.Logger.Error("Server forced to shutdown with error", "error", err)
 	}
 	// Close the database connection

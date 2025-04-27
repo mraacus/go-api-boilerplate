@@ -10,16 +10,9 @@ import (
 	"go-api-boilerplate/internal/modules/groot"
 	"go-api-boilerplate/internal/modules/users"
 	"go-api-boilerplate/internal/server/handler"
-	"go-api-boilerplate/internal/server/middlewares"
 )
 
-func (s *Server) RegisterRoutes(handler handler.Handler) http.Handler {
-	// Create a new Echo instance and set up middleware
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middlewares.CustomMiddleware)
-
+func (s *Server) RegisterRoutes(e *echo.Echo, handler handler.Handler) http.Handler {
 	// Set up custom CORS middleware for the Echo instance
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"https://*", "http://*"},
