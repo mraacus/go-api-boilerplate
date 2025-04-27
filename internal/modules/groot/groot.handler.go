@@ -9,10 +9,16 @@ import (
 )
 
 // groot mascot for groot handler (for testing)
-func GrootHandler(c echo.Context, h *handler.Handler) error {
+func groot(c echo.Context, h *handler.Handler) error {
 	h.Logger.Info("Received a request to groot")
 	resp := map[string]string{
 		"message": "I am groot",
 	}
 	return c.JSON(http.StatusOK, resp)
+}
+
+func HandleGroot(h *handler.Handler) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return groot(c, h)
+	}
 }

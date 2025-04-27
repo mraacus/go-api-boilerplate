@@ -10,7 +10,7 @@ import (
 	"go-api-boilerplate/internal/server/handler"
 )
 
-func CreateUser(c echo.Context, h *handler.Handler) error {
+func createUser(c echo.Context, h *handler.Handler) error {
 	// Parse the request body
 	req := new(CreateUserRequest)
 	err := c.Bind(req)
@@ -52,11 +52,23 @@ func CreateUser(c echo.Context, h *handler.Handler) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-func ListUsers(c echo.Context, h *handler.Handler) error {
+func HandleCreateUser(h *handler.Handler) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return createUser(c, h)
+	}
+}
+
+func listUsers(c echo.Context, h *handler.Handler) error {
 	h.Logger.Info("Received a request to list users")
 	users, err := h.Q.ListUsers(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, users)
+}
+
+func HandleListUsers(h *handler.Handler) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return listUsers(c, h)
+	}
 }

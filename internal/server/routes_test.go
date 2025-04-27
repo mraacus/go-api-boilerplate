@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -22,10 +23,14 @@ func TestHandler(t *testing.T) {
 
 	// Create an instance of the handler with a mock DB
 	q := queries.New(nil)
-	h := &handler.Handler{Q: *q}
+	h := &handler.Handler{
+		Q:      *q,
+		Logger: slog.Default(),
+	}
+	grootHandler := groot.HandleGroot(h)
 
 	// Assertions
-	if err := groot.GrootHandler(c, h); err != nil {
+	if err := grootHandler(c); err != nil {
 		t.Errorf("handler() error = %v", err)
 		return
 	}

@@ -8,7 +8,5 @@ import (
 
 func RegisterGrootRoutes(e *echo.Echo, h *handler.Handler) {
 
-	e.GET("/", func(c echo.Context) error {
-		return GrootHandler(c, h)
-	})
+	e.GET("/", HandleGroot(h))
 }
