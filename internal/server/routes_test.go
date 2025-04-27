@@ -10,7 +10,8 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"go-api-boilerplate/internal/database/queries"
-	"go-api-boilerplate/internal/server/handlers"
+	"go-api-boilerplate/internal/modules/groot"
+	"go-api-boilerplate/internal/server/handler"
 )
 
 func TestHandler(t *testing.T) {
@@ -21,10 +22,10 @@ func TestHandler(t *testing.T) {
 
 	// Create an instance of the handler with a mock DB
 	q := queries.New(nil)
-	h := &handlers.Handler{Q: *q}
+	h := &handler.Handler{Q: *q}
 
 	// Assertions
-	if err := h.GrootHandler(c); err != nil {
+	if err := groot.GrootHandler(c, h); err != nil {
 		t.Errorf("handler() error = %v", err)
 		return
 	}
