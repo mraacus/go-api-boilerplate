@@ -10,6 +10,7 @@ import (
 
 // groot mascot for groot handler (for testing)
 func GrootHandler(c echo.Context, h *handler.Handler) error {
+	h.Logger.Info("Received a request to groot")
 	resp := map[string]string{
 		"message": "I am groot",
 	}
