@@ -53,7 +53,8 @@ func NewServer() *Server {
 	logger.Info("Successfully initialized sqlc queries")
 
 	h := handler.Handler{
-		Q: *q,
+		Q:      *q,
+		Logger: logger,
 	}
 	logger.Info("Successfully initialized handlers")
 

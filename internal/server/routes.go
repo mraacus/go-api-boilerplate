@@ -7,7 +7,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"go-api-boilerplate/internal/database"
-
 	"go-api-boilerplate/internal/modules/groot"
 	"go-api-boilerplate/internal/modules/users"
 	"go-api-boilerplate/internal/server/handler"
