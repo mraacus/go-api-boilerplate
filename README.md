@@ -96,6 +96,12 @@ POST /users
 
 ```
 
+Ping your database to check its health using:
+
+```
+GET /health
+```
+
 ## Project Structure
 
 ```
