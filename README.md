@@ -33,7 +33,6 @@ This repository uses the following technology stack.
 2. Create your .env file
    ```bash
    cp .env.sample .env
-   # Edit .env with your preferred settings
    ```
 
 ### Set up your PostgreSQL database with Docker
@@ -56,30 +55,33 @@ This boilerplate comes with a docker-compose file to spin up a local PostgreSQL 
 ### Running the server
 
 For development with hot reloading:
-`bash
+
+    ```bash
     make watch
-    `
+    ```
+
 Or run the server directly:
-`bash
+
+    ```bash
     go run cmd/api/main.go
-    `
+    ```
 
 ### Test the server API
 
 Testing just the API connection:
 
-````
+```
 GET /
 
-    Response:
-    {
-    "message": "I am groot"
-    }
-    ```
+Response:
+{
+"message": "I am groot"
+}
+```
 
 Testing database functionality:
 
-````
+```
 
 POST /users
 
@@ -115,7 +117,5 @@ POST /users
 ├── .env # Environment variables
 ├── docker-compose.yml # Docker services
 └── Makefile # Development Make commands
-
-```
 
 ```
