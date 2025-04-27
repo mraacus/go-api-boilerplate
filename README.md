@@ -2,7 +2,31 @@
 
 Authored by [Marcus Ong](https://github.com/mraacus)
 
-A production-ready Go API server boilerplate using Echo, sqlc, and Goose.
+An easily extendible RESTful API server boilerplate in go.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies](#technologies)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+  - [Environment Setup](#environment-setup)
+  - [Database Setup](#set-up-your-postgresql-database-with-docker)
+  - [Running the Server](#running-the-server)
+  - [Testing the API](#test-the-server-api)
+- [Project Structure](#project-structure)
+- [License](#license)
+
+## Features
+
+- Domain-driven design with modular architecture
+- RESTful API setup built on Echo
+- PostgreSQL integration with sqlc for type-safe database access
+- Database migrations with Goose for version-controlled schema changes
+- Structured logging with slog
+- Request validation using go-playground/validator
+- Docker Integration for containerized PostgreSQL
+- Hot reloading during development with air
 
 ## Technologies
 
@@ -122,3 +146,7 @@ GET /health
 └── Makefile            # Development Make commands
 
 ```
+
+## License
+
+This boilerplate is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
