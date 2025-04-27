@@ -56,15 +56,11 @@ This boilerplate comes with a docker-compose file to spin up a local PostgreSQL 
 
 For development with hot reloading:
 
-    ```
     make watch
-    ```
 
 Or run the server directly:
 
-    ```
     go run cmd/api/main.go
-    ```
 
 ### Test the server API
 
@@ -73,10 +69,10 @@ Testing just the API connection:
 ```
 GET /
 
-Response:
-{
-"message": "I am groot"
-}
+    Response:
+    {
+    "message": "I am groot"
+    }
 ```
 
 Testing database functionality:
@@ -112,7 +108,7 @@ POST /users
 │ │ ├── migrations/     # Database migrations
 │ │ ├── queries/        # sqlc generated go code
 │ │ └── sqlc/           # sqlc queries and sqlc.yaml
-│ ├── modules/          # Modules Domains
+│ ├── modules/          # Modules domains
 │ └── server/           # Server setup
 ├── .env                # Environment variables
 ├── docker-compose.yml  # Docker services
