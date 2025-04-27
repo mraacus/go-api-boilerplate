@@ -10,65 +10,57 @@ import (
 	"go-api-boilerplate/internal/server/handler"
 )
 
-func createUser(c echo.Context, h *handler.Handler) error {
-	// Parse the request body
-	req := new(CreateUserRequest)
-	err := c.Bind(req)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "Invalid request body",
-		})
-	}
-	h.Logger.Info("Received a request to create a user", "request body", req)
-
-	// Validate the request
-	err = ValidateCreateUser(req)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": err.Error(),
-		})
-	}
-	h.Logger.Info("Creating a user with", "name", req.Name, "role", req.Role)
-
-	role := pgtype.Text{String: req.Role, Valid: true}
-	// Create the user in the database
-	user, err := h.Q.CreateUser(c.Request().Context(), queries.CreateUserParams{
-		Name: req.Name,
-		Role: role,
-	})
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": err.Error(),
-		})
-	}
-	h.Logger.Info("User created successfully", "user", user)
-
-	response := map[string]any{
-		"id":   user.ID,
-		"name": user.Name,
-		"role": user.Role.String,
-	}
-
-	return c.JSON(http.StatusOK, response)
-}
-
 func HandleCreateUser(h *handler.Handler) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return createUser(c, h)
-	}
-}
+		// Parse the request body
+		req := new(CreateUserRequest)
+		err := c.Bind(req)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error": "Invalid request body",
+			})
+		}
+		h.Logger.Info("Received a request to create a user", "request body", req)
 
-func listUsers(c echo.Context, h *handler.Handler) error {
-	h.Logger.Info("Received a request to list users")
-	users, err := h.Q.ListUsers(c.Request().Context())
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		// Validate the request
+		err = ValidateCreateUser(req)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error": err.Error(),
+			})
+		}
+		h.Logger.Info("Creating a user with", "name", req.Name, "role", req.Role)
+
+		role := pgtype.Text{String: req.Role, Valid: true}
+		// Create the user in the database
+		user, err := h.Q.CreateUser(c.Request().Context(), queries.CreateUserParams{
+			Name: req.Name,
+			Role: role,
+		})
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
+				"error": err.Error(),
+			})
+		}
+		h.Logger.Info("User created successfully", "user", user)
+
+		response := map[string]any{
+			"id":   user.ID,
+			"name": user.Name,
+			"role": user.Role.String,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
-	return c.JSON(http.StatusOK, users)
 }
 
 func HandleListUsers(h *handler.Handler) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return listUsers(c, h)
+		h.Logger.Info("Received a request to list users")
+		users, err := h.Q.ListUsers(c.Request().Context())
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+		return c.JSON(http.StatusOK, users)
 	}
 }
