@@ -28,19 +28,19 @@ type Server struct {
 var ctx = context.Background()
 
 var (
-	database = os.Getenv("DB_DATABASE")
-	password = os.Getenv("DB_PASSWORD")
-	username = os.Getenv("DB_USER")
-	port     = os.Getenv("DB_PORT")
-	host     = os.Getenv("DB_HOST")
-	schema   = os.Getenv("DB_SCHEMA")
+	database_name = os.Getenv("DB_DATABASE")
+	password      = os.Getenv("DB_PASSWORD")
+	username      = os.Getenv("DB_USER")
+	port          = os.Getenv("DB_PORT")
+	host          = os.Getenv("DB_HOST")
+	schema        = os.Getenv("DB_SCHEMA")
 )
 
 func NewServer() *Server {
 	// Set up logger using slog
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database_name, schema)
 
 	pool, err := pgxpool.New(ctx, dsn)
 	if err != nil {

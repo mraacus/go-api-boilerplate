@@ -3,11 +3,10 @@ package handlers
 import (
 	"net/http"
 
-	"go-api-boilerplate/internal/database/queries"
-
 	"github.com/jackc/pgx/v5/pgtype"
-
 	"github.com/labstack/echo/v4"
+
+	"go-api-boilerplate/internal/database/queries"
 )
 
 type Handler struct {
@@ -22,10 +21,6 @@ func (h *Handler) GrootHandler(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, resp)
 }
-
-// func (h *Handler) HealthHandler(c echo.Context) error {
-// 	return c.JSON(http.StatusOK, h.DB.Health())
-// }
 
 func (h *Handler) CreateUser(c echo.Context) error {
 	// var user queries.User
