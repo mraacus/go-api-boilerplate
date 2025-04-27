@@ -6,9 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"os/signal"
 	"strconv"
-	"syscall"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -40,6 +38,7 @@ func NewServer() *Server {
 	// Set up logger using slog
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
+	// Initialize the database connection pool
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database_name, schema)
 
 	pool, err := pgxpool.New(ctx, dsn)
@@ -48,10 +47,6 @@ func NewServer() *Server {
 		os.Exit(1)
 	}
 	logger.Info("Successfully connected to database", "dsn", dsn)
-
-	// IDK what is this
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	// Initialize sqlc queries with the database connection pool
 	q := queries.New(pool)
@@ -86,7 +81,7 @@ func NewServer() *Server {
 }
 
 func (s *Server) Start() error {
-	s.Logger.Info("Starting up and listening on port:", "port", s.HttpServer.Addr)
+	s.Logger.Info("Server starting up and listening on port:", "port", s.HttpServer.Addr)
 	err := s.HttpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		s.Logger.Error("Error starting server:", "error", err)

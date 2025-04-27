@@ -48,7 +48,6 @@ func main() {
 	done := make(chan bool, 1)
 
 	// Run graceful shutdown in a separate goroutine
-	// go gracefulShutdown(server, done)
 	go gracefulShutdown(server, done)
 
 	// Start the server
