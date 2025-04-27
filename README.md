@@ -56,13 +56,13 @@ This boilerplate comes with a docker-compose file to spin up a local PostgreSQL 
 
 For development with hot reloading:
 
-    ```bash
+    ```
     make watch
     ```
 
 Or run the server directly:
 
-    ```bash
+    ```
     go run cmd/api/main.go
     ```
 
@@ -106,16 +106,16 @@ POST /users
 
 .
 ├── cmd/
-│ └── api/ # Application entrypoint
+│ └── api/              # Application entrypoint
 ├── internal/
-│ ├── database/ # Database connection and queries
-│ │ ├── migrations/ # Database migrations
-│ │ ├── queries/ # sqlc generated go code
-│ │ └── sqlc/ # sqlc queries and sqlc.yaml
-│ ├── modules/ # Modules Domains
-│ └── server/ # Server setup
-├── .env # Environment variables
-├── docker-compose.yml # Docker services
-└── Makefile # Development Make commands
+│ ├── database/         # Database connection and queries
+│ │ ├── migrations/     # Database migrations
+│ │ ├── queries/        # sqlc generated go code
+│ │ └── sqlc/           # sqlc queries and sqlc.yaml
+│ ├── modules/          # Modules Domains
+│ └── server/           # Server setup
+├── .env                # Environment variables
+├── docker-compose.yml  # Docker services
+└── Makefile            # Development Make commands
 
 ```
