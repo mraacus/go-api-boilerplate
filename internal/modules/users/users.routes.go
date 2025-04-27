@@ -6,7 +6,6 @@ import (
 	"go-api-boilerplate/internal/server/handler"
 )
 
-// RegisterUserRoutes registers all user-related routes
 func RegisterUserRoutes(e *echo.Echo, h *handler.Handler) {
 
 	e.POST("/users", HandleCreateUser(h))
