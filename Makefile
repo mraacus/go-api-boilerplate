@@ -13,7 +13,7 @@ build:
 run:
 	@go run cmd/api/main.go
 # Create DB container
-docker-run:
+docker-up:
 	@if docker compose up --build 2>/dev/null; then \
 		: ; \
 	else \
