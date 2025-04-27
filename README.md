@@ -108,8 +108,9 @@ POST /users
 │ │ ├── migrations/     # Database migrations
 │ │ ├── queries/        # sqlc generated go code
 │ │ └── sqlc/           # sqlc queries and sqlc.yaml
-│ ├── modules/          # Modules domains
+│ ├── modules/          # Module domains
 │ └── server/           # Server setup
+│   └── middlewares/    # Custom middleware
 ├── .env                # Environment variables
 ├── docker-compose.yml  # Docker services
 └── Makefile            # Development Make commands
