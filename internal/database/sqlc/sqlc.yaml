@@ -7,7 +7,7 @@ servers: []
 sql:
   - engine: "postgresql"
     queries: "./query"
-    schema: "./schema.sql"
+    schema: "../migrations"
     gen:
       go:
         package: "queries"

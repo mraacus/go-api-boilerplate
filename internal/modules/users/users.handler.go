@@ -30,12 +30,11 @@ func CreateUser(c echo.Context, h *handler.Handler) error {
 	}
 	h.Logger.Info("Creating a user with", "name", req.Name, "role", req.Role)
 
-	roleParam := pgtype.Text{String: req.Role, Valid: true}
-
+	role := pgtype.Text{String: req.Role, Valid: true}
 	// Create the user in the database
 	user, err := h.Q.CreateUser(c.Request().Context(), queries.CreateUserParams{
 		Name: req.Name,
-		Role: roleParam,
+		Role: role,
 	})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{

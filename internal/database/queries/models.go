@@ -8,18 +8,6 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type Card struct {
-	ID        int64
-	OwnerID   int64
-	Type      string
-	Number    string
-	ExpDate   pgtype.Date
-	Cvv       string
-	Balance   pgtype.Numeric
-	CreatedAt pgtype.Timestamp
-	UpdatedAt pgtype.Timestamp
-}
-
 type User struct {
 	ID   int64
 	Name string
