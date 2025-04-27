@@ -11,15 +11,30 @@ import (
 )
 
 func CreateUser(c echo.Context, h *handler.Handler) error {
-	// var user queries.User
-	// if err := c.Bind(&user); err != nil {
-	// 	return c.JSON(http.StatusBadRequest, err)
-	// }
+	// Parse the request body
+	req := new(CreateUserRequest)
+	err := c.Bind(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid request body",
+		})
+	}
+	h.Logger.Info("Received a request to create a user", "request body", req)
 
-	roleParam := pgtype.Text{String: "admin", Valid: true}
+	// Validate the request
+	err = ValidateCreateUser(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
+	}
+	h.Logger.Info("Creating a user with", "name", req.Name, "role", req.Role)
 
+	roleParam := pgtype.Text{String: req.Role, Valid: true}
+
+	// Create the user in the database
 	user, err := h.Q.CreateUser(c.Request().Context(), queries.CreateUserParams{
-		Name: "test user",
+		Name: req.Name,
 		Role: roleParam,
 	})
 	if err != nil {
@@ -27,8 +42,9 @@ func CreateUser(c echo.Context, h *handler.Handler) error {
 			"error": err.Error(),
 		})
 	}
+	h.Logger.Info("User created successfully", "user", user)
 
-	response := map[string]interface{}{
+	response := map[string]any{
 		"id":   user.ID,
 		"name": user.Name,
 		"role": user.Role.String,
@@ -38,6 +54,7 @@ func CreateUser(c echo.Context, h *handler.Handler) error {
 }
 
 func ListUsers(c echo.Context, h *handler.Handler) error {
+	h.Logger.Info("Received a request to list users")
 	users, err := h.Q.ListUsers(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
