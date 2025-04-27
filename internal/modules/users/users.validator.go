@@ -6,7 +6,7 @@ import (
 
 var validate *validator.Validate
 
-// Initialize the validator with any custom validations
+// Initialize the validator
 func init() {
 	validate = validator.New()
 }
