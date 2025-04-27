@@ -13,7 +13,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 
 	"go-api-boilerplate/internal/database/queries"
-	"go-api-boilerplate/internal/server/handlers"
+	"go-api-boilerplate/internal/server/handler"
 )
 
 type Server struct {
@@ -52,7 +52,7 @@ func NewServer() *Server {
 	q := queries.New(pool)
 	logger.Info("Successfully initialized sqlc queries")
 
-	h := handlers.Handler{
+	h := handler.Handler{
 		Q: *q,
 	}
 	logger.Info("Successfully initialized handlers")

@@ -1,4 +1,4 @@
-package handlers
+package users
 
 import (
 	"net/http"
@@ -7,22 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"go-api-boilerplate/internal/database/queries"
+	"go-api-boilerplate/internal/server/handler"
 )
 
-type Handler struct {
-	Q queries.Queries
-}
-
-// groot mascot for root handler
-func (h *Handler) GrootHandler(c echo.Context) error {
-	// Can access h.DB here
-	resp := map[string]string{
-		"message": "I am groot",
-	}
-	return c.JSON(http.StatusOK, resp)
-}
-
-func (h *Handler) CreateUser(c echo.Context) error {
+func CreateUser(c echo.Context, h *handler.Handler) error {
 	// var user queries.User
 	// if err := c.Bind(&user); err != nil {
 	// 	return c.JSON(http.StatusBadRequest, err)
@@ -49,7 +37,7 @@ func (h *Handler) CreateUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-func (h *Handler) ListUsers(c echo.Context) error {
+func ListUsers(c echo.Context, h *handler.Handler) error {
 	users, err := h.Q.ListUsers(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)

@@ -7,10 +7,13 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"go-api-boilerplate/internal/database"
-	"go-api-boilerplate/internal/server/handlers"
+
+	"go-api-boilerplate/internal/modules/groot"
+	"go-api-boilerplate/internal/modules/users"
+	"go-api-boilerplate/internal/server/handler"
 )
 
-func (s *Server) RegisterRoutes(handler handlers.Handler) http.Handler {
+func (s *Server) RegisterRoutes(handler handler.Handler) http.Handler {
 	// Create a new Echo instance and set up middleware
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -25,13 +28,15 @@ func (s *Server) RegisterRoutes(handler handlers.Handler) http.Handler {
 		MaxAge:           300,
 	}))
 
+	// Database health check route
 	e.GET("/health", func(c echo.Context) error {
 		healthData := database.Health(s.DB)
 		return c.JSON(http.StatusOK, healthData)
 	})
 
-	e.GET("/", handler.GrootHandler)
-	e.POST("/users", handler.CreateUser)
+	// Register domain routes
+	groot.RegisterGrootRoutes(e, &handler)
+	users.RegisterUserRoutes(e, &handler)
 
 	return e
 }
